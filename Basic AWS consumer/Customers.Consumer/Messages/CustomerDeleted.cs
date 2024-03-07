@@ -1,8 +1,6 @@
-﻿using MediatR;
+﻿namespace Customers.Consumer.Messages;
 
-namespace Customers.Consumer.Messages;
-
-public class CustomerDeleted: ISqsMessage
+public class CustomerDeleted : ISqsMessage
 {
     public required Guid Id { get; init; }
 }

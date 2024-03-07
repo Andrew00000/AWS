@@ -2,6 +2,6 @@
 
 namespace Customers.Consumer.Messages;
 
-public interface ISqsMessage: IRequest
+public interface ISqsMessage : IRequest
 {
 }

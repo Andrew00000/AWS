@@ -42,17 +42,17 @@ public class QueueConsumerService : BackgroundService
                 var messageType = message.MessageAttributes["MessageType"].StringValue;
 
                 var type = Type.GetType($"Customers.Consumer.Messages.{messageType}");
-                if(type is null)
+                if (type is null)
                 {
                     logger.LogWarning("Unknown message type: {messageType}", messageType);
                     continue;
                 }
-                
+
                 var typedMessage = (ISqsMessage)JsonSerializer.Deserialize(message.Body, type)!;
 
                 try
                 {
-                    await mediator.Send(typedMessage,cancellationToken);
+                    await mediator.Send(typedMessage, cancellationToken);
                 }
                 catch (Exception ex)
                 {

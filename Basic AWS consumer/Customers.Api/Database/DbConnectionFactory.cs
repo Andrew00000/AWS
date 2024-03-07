@@ -1,5 +1,5 @@
-﻿using System.Data;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
+using System.Data;
 
 namespace Customers.Api.Database;
 

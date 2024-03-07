@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Amazon.SQS;
+﻿using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace Customers.Api.Messaging;
 
@@ -46,7 +46,7 @@ public class SqsMessenger : ISqsMessenger
         {
             return _queueUrl;
         }
-        
+
         var queueUrlResponse = await _sqs.GetQueueUrlAsync(_queueSettings.Value.Name);
         _queueUrl = queueUrlResponse.QueueUrl;
         return _queueUrl;

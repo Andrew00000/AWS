@@ -22,7 +22,7 @@ public class GitHubService : IGitHubService
             var message = responseBody!["message"]!.ToString();
             throw new HttpRequestException(message);
         }
-        
+
         return response.StatusCode == HttpStatusCode.OK;
     }
 }

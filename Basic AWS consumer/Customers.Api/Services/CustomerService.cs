@@ -14,7 +14,7 @@ public class CustomerService : ICustomerService
     private readonly IGitHubService _gitHubService;
     private readonly ISqsMessenger _sqsMessenger;
 
-    public CustomerService(ICustomerRepository customerRepository, 
+    public CustomerService(ICustomerRepository customerRepository,
         IGitHubService gitHubService, ISqsMessenger sqsMessenger)
     {
         _customerRepository = customerRepository;
@@ -37,7 +37,7 @@ public class CustomerService : ICustomerService
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
             throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
-        
+
         var customerDto = customer.ToCustomerDto();
         var response = await _customerRepository.CreateAsync(customerDto);
         if (response)
@@ -63,14 +63,14 @@ public class CustomerService : ICustomerService
     public async Task<bool> UpdateAsync(Customer customer)
     {
         var customerDto = customer.ToCustomerDto();
-        
+
         var isValidGitHubUser = await _gitHubService.IsValidGitHubUser(customer.GitHubUsername);
         if (!isValidGitHubUser)
         {
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
             throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
-        
+
         var response = await _customerRepository.UpdateAsync(customerDto);
         if (response)
         {
@@ -96,7 +96,7 @@ public class CustomerService : ICustomerService
 
     private static ValidationFailure[] GenerateValidationError(string paramName, string message)
     {
-        return new []
+        return new[]
         {
             new ValidationFailure(paramName, message)
         };

@@ -50,7 +50,7 @@ public class CustomerRepository : ICustomerRepository
     {
         using var connection = await _connectionFactory.CreateConnectionAsync();
         var result = await connection.ExecuteAsync(@"DELETE FROM Customers WHERE Id = @Id",
-            new {Id = id});
+            new { Id = id });
         return result > 0;
     }
 }
