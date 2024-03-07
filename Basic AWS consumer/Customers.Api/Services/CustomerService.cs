@@ -14,9 +14,8 @@ public class CustomerService : ICustomerService
     private readonly IGitHubService _gitHubService;
     private readonly ISqsMessenger _sqsMessenger;
 
-    public CustomerService(ICustomerRepository customerRepository,
-                           IGitHubService gitHubService,
-                           ISqsMessenger sqsMessenger)
+    public CustomerService(ICustomerRepository customerRepository, 
+        IGitHubService gitHubService, ISqsMessenger sqsMessenger)
     {
         _customerRepository = customerRepository;
         _gitHubService = gitHubService;
@@ -41,7 +40,6 @@ public class CustomerService : ICustomerService
         
         var customerDto = customer.ToCustomerDto();
         var response = await _customerRepository.CreateAsync(customerDto);
-
         if (response)
         {
             await _sqsMessenger.SendMessageAsync(customer.ToCustomerCreatedMessage());
@@ -72,9 +70,8 @@ public class CustomerService : ICustomerService
             var message = $"There is no GitHub user with username {customer.GitHubUsername}";
             throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
-
+        
         var response = await _customerRepository.UpdateAsync(customerDto);
-
         if (response)
         {
             await _sqsMessenger.SendMessageAsync(customer.ToCustomerUpdatedMessage());
@@ -86,7 +83,6 @@ public class CustomerService : ICustomerService
     public async Task<bool> DeleteAsync(Guid id)
     {
         var response = await _customerRepository.DeleteAsync(id);
-
         if (response)
         {
             await _sqsMessenger.SendMessageAsync(new CustomerDeleted

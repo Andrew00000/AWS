@@ -1,20 +1,20 @@
-﻿using Amazon.SQS;
+﻿using System.Text.Json;
+using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 
 namespace Customers.Api.Messaging;
 
-public class SqsMessenger: ISqsMessenger
+public class SqsMessenger : ISqsMessenger
 {
-    private readonly IAmazonSQS sqs;
-    private readonly IOptions<QueueSettings> queueSettings;
-    private string? queueUrl;
+    private readonly IAmazonSQS _sqs;
+    private readonly IOptions<QueueSettings> _queueSettings;
+    private string? _queueUrl;
 
     public SqsMessenger(IAmazonSQS sqs, IOptions<QueueSettings> queueSettings)
     {
-        this.sqs = sqs;
-        this.queueSettings = queueSettings;
+        _sqs = sqs;
+        _queueSettings = queueSettings;
     }
 
     public async Task<SendMessageResponse> SendMessageAsync<T>(T message)
@@ -37,18 +37,18 @@ public class SqsMessenger: ISqsMessenger
             }
         };
 
-        return await sqs.SendMessageAsync(sendMessageRequest);
+        return await _sqs.SendMessageAsync(sendMessageRequest);
     }
 
     private async Task<string> GetQueueUrlAsync()
     {
-        if (queueUrl is not null)
+        if (_queueUrl is not null)
         {
-            return queueUrl;
+            return _queueUrl;
         }
-
-        var queueUrlResponse = await sqs.GetQueueUrlAsync(queueSettings.Value.Name);
-        queueUrl = queueUrlResponse.QueueUrl;
-        return queueUrl;
+        
+        var queueUrlResponse = await _sqs.GetQueueUrlAsync(_queueSettings.Value.Name);
+        _queueUrl = queueUrlResponse.QueueUrl;
+        return _queueUrl;
     }
 }
