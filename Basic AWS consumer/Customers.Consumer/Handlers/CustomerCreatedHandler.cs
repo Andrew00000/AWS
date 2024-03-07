@@ -14,9 +14,8 @@ namespace Customers.Consumer.Handlers
 
         public Task<Unit> Handle(CustomerCreated request, CancellationToken cancellationToken)
         {
-            throw new Exception("sad noises");
-            //logger.LogInformation(request.FullName);
-           // return Unit.Task;
+            logger.LogInformation(request.FullName);
+            return Unit.Task;
         }
     }
 }
